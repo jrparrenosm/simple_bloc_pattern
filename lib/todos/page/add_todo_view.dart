@@ -34,28 +34,38 @@ class _AddTodoPageState extends State<AddTodoPage> {
             return const CircularProgressIndicator();
           }
           if (state is TodosLoaded) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _inputField('ID', controllerId),
-                _inputField('Title', controllerTitle),
-                _inputField('SubTitle', controllerSubtitle),
-                ElevatedButton(
-                  onPressed: () {
-                    var todo = TodoModel(
-                      id: controllerId.value.text,
-                      title: controllerTitle.value.text,
-                      subTitle: controllerSubtitle.value.text,
-                    );
-                    context.read<TodoBloc>().add(AddTodo(todo: todo));
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor,
+            return Container(
+              padding: const EdgeInsets.all(5.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _inputField('ID', controllerId),
+                  _inputField('Title', controllerTitle),
+                  _inputField('Subtitle', controllerSubtitle),
+                  ElevatedButton(
+                    onPressed: () {
+                      var todo = TodoModel(
+                        id: controllerId.value.text,
+                        title: controllerTitle.value.text,
+                        subTitle: controllerSubtitle.value.text,
+                      );
+                      context.read<TodoBloc>().add(AddTodo(todo: todo));
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                      minimumSize: const Size.fromHeight(50),
+                    ),
+                    child: const Text(
+                      'Add To Do',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
                   ),
-                  child: const Text('Add To Do'),
-                ),
-              ],
+                ],
+              ),
             );
           } else {
             return const Text('Something went wrong.');
@@ -76,7 +86,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
           '$field: ',
           style: const TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.normal,
           ),
         ),
         Container(
@@ -84,6 +94,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
           margin: const EdgeInsets.only(bottom: 10),
           width: double.infinity,
           child: TextFormField(
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              hintText: 'Enter a $field',
+            ),
             controller: controller,
           ),
         ),

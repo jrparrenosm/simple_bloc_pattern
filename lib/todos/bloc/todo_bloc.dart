@@ -12,6 +12,11 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<AddTodo>(_onAddTodo);
     on<UpdateTodo>(_onUpdateTodo);
     on<DeleteTodo>(_onDeleteTodo);
+    on<LoadTodosInitial>(_onInitialTodo);
+  }
+
+  void _onInitialTodo(LoadTodosInitial event, Emitter<TodoState> emit) {
+    emit(TodosLoading());
   }
 
   void _onLoadTodos(LoadTodos event, Emitter<TodoState> emit) {
@@ -31,5 +36,13 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
   void _onUpdateTodo(UpdateTodo event, Emitter<TodoState> emit) {}
 
-  void _onDeleteTodo(DeleteTodo event, Emitter<TodoState> emit) {}
+  void _onDeleteTodo(DeleteTodo event, Emitter<TodoState> emit) {
+    final state = this.state;
+    if (state is TodosLoaded) {
+      List<TodoModel> todos = state.todos.where((todo) {
+        return todo.id != event.todo.id;
+      }).toList();
+      emit(TodosLoaded(todos: todos));
+    }
+  }
 }

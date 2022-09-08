@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simple_bloc_pattern/todos/page/sample_todo.dart';
 
 import 'models/todo_model.dart';
 import 'todos/bloc/todo_bloc.dart';
@@ -17,29 +18,14 @@ class TodoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => TodoBloc()
-            ..add(
-              const LoadTodos(
-                todos: [
-                  TodoModel(
-                      id: "1",
-                      title: "First Todo",
-                      subTitle: "This is my first"),
-                  TodoModel(
-                      id: "2",
-                      title: "Second Todo",
-                      subTitle: "This is my second"),
-                ],
-              ),
-            ),
-        ),
+        BlocProvider(create: (context) => TodoBloc()),
       ],
       child: MaterialApp(
         title: 'Welcome to Flutter',
-        home: const TodoPage(),
+        home: const SampleTodo(),
         routes: {
           TodoPage.routeName: (ctx) => const TodoPage(),
+          SampleTodo.routeName: (ctx) => const SampleTodo(),
         },
       ),
     );
